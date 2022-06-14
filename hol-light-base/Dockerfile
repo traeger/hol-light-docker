@@ -12,7 +12,7 @@ FROM ocaml/opam2:debian-stable AS holbox-base
 
 USER root
 
-RUN apt-get update && \
+RUN apt-get update --allow-releaseinfo-change && \
     apt-get -y install m4 rlwrap
 
 USER opam

@@ -26,9 +26,6 @@ appropriate memory limit in the docker configuration.
 | Checkpoint                | Preloaded with                 |
 |------------------------   |-----------------------------   |
 | `hol-light-core`          | Core library                   |
-| `hol-light-multivariate`  | Multivariate analysis          |
-| `hol-light-complex`       | Complex analysis               |
-| `hol-light-hypercomplex`  | Quaternions                    |
 
 ## How to build the images
 
@@ -50,18 +47,15 @@ Build the other images (prepare checkpointing)
 ```
 docker build --target holbox-build -t holbox-build hol-light-base
 docker build --target hol-light-base -t hol-light-base hol-light-base
-docker build --target hol-light-elpi -t hol-light-elpi hol-light-base
 docker build --target hol-light-ckpt -t hol-light-ckpt hol-light-base
 ```
 
-## Checkpoints
+## Create HOL-Light Executable Checkpoints
 
 To start the container for building the checkpoints:
 ```
 docker run --name build-ckpt -h holbox -it -m 6G holbox-build screen
 ```
-
-## Frequently used commands
 
 In one screen terminal
 ```
@@ -84,6 +78,9 @@ Back into the first terminal (`C-a n`)
 c
 ```
 
+Back to the ocaml process (`C-a n`).
+Kill the ocaml process (`C-d`).
+
 Then open another screen tab and move the checkpoint in a separate
 directory:
 ```
@@ -91,48 +88,7 @@ mkdir ckpt_core
 mv ckpt*.dmtcp dmtcp_restart_script* ckpt_core
 ```
 
-Next, load multivariate analysis
-```
-loadt "Multivariate/make.ml";;
-Gc.compact();;
-```
-
-Then checkpoint and move in a separate directory
-```
-mkdir ckpt_multivariate
-mv ckpt*.dmtcp dmtcp_restart_script* ckpt_multivariate
-```
-
-Load multivariate-based complex analysis
-```
-loadt "Library/binomial.ml";;
-loadt "Multivariate/complexes.ml";;
-loadt "Multivariate/canal.ml";;
-loadt "Multivariate/transcendentals.ml";;
-loadt "Multivariate/realanalysis.ml";;
-loadt "Multivariate/moretop.ml";;
-loadt "Multivariate/cauchy.ml";;
-loadt "Multivariate/complex_database.ml";;
-Gc.compact();;
-```
-
-Then checkpoint and move in a separate directory
-```
-mkdir ckpt_complex
-mv ckpt*.dmtcp dmtcp_restart_script* ckpt_complex
-```
-
-Load quaternionic calculus
-```
-loadt "Quaternions/make.ml";;
-Gc.compact();;
-```
-
-Then checkpoint and move in a separate directory
-```
-mkdir ckpt_hypercomplex
-mv ckpt*.dmtcp dmtcp_restart_script* ckpt_hypercomplex
-```
+Close the image.
 ## Build checkpoint images
 
 Commit the build-ckpt container into an image called holbox-ckpt
@@ -143,15 +99,9 @@ docker container commit build-ckpt holbox-ckpt
 Build the images with the ckeckpointed binaries
 ```
 docker build --target hol-light-core -t hol-light-core hol-light-core
-docker build --target hol-light-multivariate -t hol-light-multivariate hol-light-core
-docker build --target hol-light-complex -t hol-light-complex hol-light-core
-docker build --target hol-light-hypercomplex -t hol-light-hypercomplex hol-light-core
 ```
 
 ## Run the ckeckpointed images
 ```
 docker container run --rm -h holbox -it hol-light-core
-docker container run --rm -h holbox -it hol-light-multivariate
-docker container run --rm -h holbox -it hol-light-complex
-docker container run --rm -h holbox -it hol-light-hypercomplex
 ```
