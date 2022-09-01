@@ -1,15 +1,10 @@
 Docker image with HOL Light preinstalled
 ========================================
 
-## Important
-
-HOL Light with Multivariate Analysis **requires at least 2 Gb**
-(maybe more) of memory!  It might be necessary to set an
-appropriate memory limit in the docker configuration.
-
 ## Notes
 
 - Based on Debian and use OCaml from the Debian distribution.
+- Dmtcp is used for checkpointing the ocaml execution to be able to skip the hol-light loading on each start.
 - Dmtcp refuse to start under root: we use the "opam" user.
 
 ## Targets of the multistage build
@@ -89,8 +84,8 @@ mv ckpt*.dmtcp dmtcp_restart_script* ckpt_core
 ```
 
 Close the image.
-## Build checkpoint images
 
+## Build checkpoint images
 Commit the build-ckpt container into an image called holbox-ckpt
 ```
 docker container commit build-ckpt holbox-ckpt
@@ -101,7 +96,7 @@ Build the images with the ckeckpointed binaries
 docker build --target hol-light-core -t hol-light-core hol-light-core
 ```
 
-## Run the ckeckpointed images
+## Run the checkpointed images
 ```
 docker container run --rm -h holbox -it hol-light-core
 ```
