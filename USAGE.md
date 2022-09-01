@@ -2,7 +2,7 @@ USAGE - Docker image with HOL Light preinstalled
 ========================================
 
 ## Install
-Follow the [INSTALL.md] first. Esspeciall the the part [Further and simpler usage](INSTALL.md#furtherandsimplerusage)
+Follow the <INSTALL.md> first. Esspeciall the the part [Further and simpler usage](INSTALL.md#furtherandsimplerusage)
 
 ## Help
 ```bash
