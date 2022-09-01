@@ -108,7 +108,7 @@ To set this up follow the following instructions:
 ### Setup a simple shell-script wrapper
 Add the contributed shell-script to you user executables to make it avialable as `hol-light`.
 ```bash
-ln -s hol-light ~bin/hol-light
+ln -s hol-light ~/bin/hol-light
 ```
 
 ### Use it
