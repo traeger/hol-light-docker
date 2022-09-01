@@ -2,7 +2,10 @@ Scripts for HOL Light (installation, deployment, checkpointing) on Docker or Pod
 ========================================
 
 ## Introduction
-Allows you use HOL Light the typical linux way.
+HOL Light needs 'camlp5'. This package is sometimes hard to install (e.g. Fedora). 
+Therefor we provied a set of scriptes using docker/podman and dmtcp (for checkpoints) to install it anywhere and hopefully with less pain.
+
+After the installion it allows you to run [HOL Light](https://www.cl.cam.ac.uk/~jrh13/hol-light/) the typical linux way.
 
 ### Run interactivly
 ```bash
