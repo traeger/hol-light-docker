@@ -1,4 +1,4 @@
-INSTALL - Docker image with HOL Light preinstalled
+INSTALL - Docker/Podman image with HOL Light preinstalled
 ========================================
 
 ## Notes
@@ -101,15 +101,18 @@ docker build --target hol-light-core -t hol-light-core hol-light-core
 docker container run --rm -h holbox -it hol-light-core
 ```
 
-## Further and simpler usage
+## I want to use Podman instead of Docker
+Simply replace `docker` by `podman` in all occurrences above.
+
+# Further and simpler usage
 We provided a even more straight forward way to use hol-light, by making it available as a common executable.
 To set this up follow the following instructions:
 
-### Setup a simple shell-script wrapper
+## Setup a simple shell-script wrapper
 Add the contributed shell-script to you user executables to make it avialable as `hol-light`.
 ```bash
 ln -s hol-light ~/bin/hol-light
 ```
 
-### Use it
+## Use it
 See [usage](USAGE.md).
