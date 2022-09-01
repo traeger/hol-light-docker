@@ -1,0 +1,78 @@
+#!/bin/bash
+
+cur="$(readlink --canonicalize-existing .)"
+
+# parse arguments, forward unkwon ones
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        --podman) 
+            USE_PODMAN=1;
+            ;;
+        --interactive) # run hol-light interactivly
+            INTERACTIVE=1
+            ;;
+        --file) # file to load
+            FILENAME=$2;
+            shift; # past value
+            ;;
+        --help) 
+            HELP=1
+            ;;
+        *) ARGS+=("$1");;
+    esac
+    shift
+done
+
+if [ $HELP ]
+then
+    echo "Examples: "
+    echo "hol-light"
+    echo "    to start an interactive hol-light shell."
+    echo "    type 'exit 0;;' to quit"
+    echo "hol-light --file FILENAME"
+    echo "    to open the given ml file in hol-light and execute it."
+    echo "hol-light --file FILENAME --interactive"
+    echo "    to open the given ml file in hol-light and execute it and keep hol-light running."
+    echo ""
+    echo "--interactive, run hol-light interactivly. Enabled by default if no file is given. Disabled by default when a file is given."
+    exit 0;
+fi
+
+
+if [ $USE_PODMAN ] 
+then
+    run_container() {
+        podman container run --rm --interactive --tty --security-opt label=disable --hostname holbox --volume "$cur:/src" hol-light-core
+    }
+    clean_container() {
+        # TODO: remove the kill all and handle this in a gracefuly way, keeping non related containers running
+        podman kill --all
+    }
+else
+    run_container() {
+        docker container run --rm --interactive --tty --security-opt label=disable --hostname holbox --volume "$cur:/src" hol-light-core
+    }
+    clean_container() {
+        # TODO: remove the kill all and handle this in a gracefuly way, keeping non related containers running
+        docker kill --all
+    }
+fi
+
+if [ $INTERACTIVE ] 
+then
+    echo "type 'exit 0;;' to quit"
+fi
+
+if [ $FILENAME ] 
+then
+    if [ $INTERACTIVE ] 
+    then
+        (echo "#use \"/src/$FILENAME\";;") | run_container
+    else
+        (echo "#use \"/src/$FILENAME\";;"; echo 'exit 0;;') | run_container
+    fi
+else
+    run_container
+fi
+
+clean_container
