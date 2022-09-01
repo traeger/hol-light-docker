@@ -112,4 +112,4 @@ ln -s hol-light ~bin/hol-light
 ```
 
 ### Use it
-See <USAGE.md>.
+See [usage](USAGE.md).
