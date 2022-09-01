@@ -27,14 +27,17 @@ if [ $HELP ]
 then
     echo "Examples: "
     echo "hol-light"
-    echo "    to start an interactive hol-light shell."
+    echo "    to start an interactive HOL Light shell."
     echo "    type 'exit 0;;' to quit"
     echo "hol-light --file FILENAME"
     echo "    to open the given ml file in hol-light and execute it."
     echo "hol-light --file FILENAME --interactive"
-    echo "    to open the given ml file in hol-light and execute it and keep hol-light running."
+    echo "    to open the given ml file in hol-light and execute it and keep HOL Light running."
     echo ""
-    echo "--interactive, run hol-light interactivly. Enabled by default if no file is given. Disabled by default when a file is given."
+    echo "Parameters: "
+    echo "    --interactive, run hol-light interactivly. Enabled by default if no file is given. Disabled by default when a file is given."
+    echo "    --podman, use podman instead of docker"
+    echo "    --file FILENAME, include (#use) the file FILENAME inside HOL Light. By default the script is non interactive and terminates when it is processed, to make it interactive use --interactive."
     exit 0;
 fi
 
@@ -58,20 +61,19 @@ else
     }
 fi
 
-if [ $INTERACTIVE ] 
-then
-    echo "type 'exit 0;;' to quit"
-fi
-
 if [ $FILENAME ] 
 then
     if [ $INTERACTIVE ] 
     then
+        echo "Welcome to HOL Light"
+        echo "type 'exit 0;;' to quit"
         (echo "#use \"/src/$FILENAME\";;") | run_container
     else
         (echo "#use \"/src/$FILENAME\";;"; echo 'exit 0;;') | run_container
     fi
 else
+    echo "Welcome to HOL Light"
+    echo "type 'exit 0;;' to quit"
     run_container
 fi
 
